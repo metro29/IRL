@@ -29,11 +29,6 @@ export function FriendActionButtons({
   const router = useRouter();
   const [pending, startTransition] = useTransition();
 
-  const refresh = () => {
-    router.refresh();
-    onSuccess?.();
-  };
-
   const run = (action: () => Promise<{ success: boolean; error?: string }>) => {
     startTransition(async () => {
       const result = await action();
@@ -49,7 +44,8 @@ export function FriendActionButtons({
             ? "Request updated."
             : "Friend request sent."
       );
-      refresh();
+      router.refresh();
+      onSuccess?.();
     });
   };
 

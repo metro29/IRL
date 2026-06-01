@@ -46,27 +46,27 @@ export async function sendFriendRequestAction(
   }
 
   const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("friend_requests")
-    .insert([
-      {
-        sender_id: userId,
-        receiver_id: receiverId,
-        status: "pending",
-      },
-    ])
-    .select("id")
-    .single();
+  const { data, error } = await supabase.rpc("send_friend_request", {
+    p_receiver_id: receiverId,
+  });
 
   if (error) {
-    const msg = error.message.includes("duplicate")
-      ? "A friend request is already pending."
-      : error.message;
+    const msg = error.message.includes("already sent you")
+      ? error.message
+      : error.message.includes("already pending")
+        ? "A friend request is already pending."
+        : error.message.includes("already friends")
+          ? "You are already friends."
+          : error.message.includes("Not authenticated")
+            ? "Not authenticated."
+            : error.message.includes("cannot add yourself")
+              ? "You cannot add yourself as a friend."
+              : error.message;
     return { success: false, error: msg };
   }
 
   revalidatePath("/friends");
-  return { success: true, data: { requestId: data.id } };
+  return { success: true, data: { requestId: data as string } };
 }
 
 export async function cancelFriendRequestAction(

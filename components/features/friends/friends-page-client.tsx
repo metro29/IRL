@@ -204,8 +204,14 @@ export function FriendsPageClient({
         {friends.length === 0 ? (
           <EmptyPanel
             title="No friends yet"
-            description="Search by username above to send your first friend request."
-            icon={<Users className="h-6 w-6 text-primary" />}
+            description={
+              incomingRequests.length > 0
+                ? "Accept an incoming request above to add them as a friend."
+                : outgoingRequests.length > 0
+                  ? "Your outgoing request(s) are pending — they’ll show here once accepted."
+                  : "Search by username above to send a friend request."
+            }
+            icon={<Users className="h-7 w-7" />}
           />
         ) : (
           <div className={UI_GRID}>

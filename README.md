@@ -94,6 +94,7 @@ lib/
 8. `supabase/migrations/20260531320000_stability_hardening.sql` — XP/notification idempotency, revoke submit_challenge
 9. `supabase/migrations/20260531400000_username_check_rpc.sql` — public username availability check for signup (required for `/signup`)
 10. `supabase/migrations/20260531500000_create_group_rpc.sql` — `create_group` RPC + RLS fix for creating groups (required for **Create Group**)
+11. `supabase/migrations/20260531600000_friend_request_rpc.sql` — `send_friend_request` RPC (required for **Add Friend** on `/friends`)
 
 **Game loop rules:** only `activate_event` generates challenges; sync calls `activate_event` only. Client RPCs: `award_challenge_completion`, `submit_event_attendance`, `review_event_attendance` (+ admin `activate_event` / `end_event`).
 
