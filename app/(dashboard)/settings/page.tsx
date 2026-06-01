@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Settings, Shield, UsersRound } from "lucide-react";
 import { PageShell } from "@/components/shared/page-shell";
+import { SettingsProfileCard } from "@/components/features/settings/settings-profile-card";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { getCurrentUserProfile } from "@/lib/db/profiles";
@@ -53,26 +54,7 @@ export default async function SettingsPage() {
       description="Manage your account and preferences."
       status="ready"
     >
-      <Card className="rounded-xl">
-        <CardHeader>
-          <CardTitle className="text-lg">Profile</CardTitle>
-          <CardDescription>Your public IRL profile</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3 text-sm">
-          <div className="flex justify-between border-b py-2">
-            <span className="text-muted-foreground">Username</span>
-            <span className="font-medium">@{profile.username}</span>
-          </div>
-          <div className="flex justify-between border-b py-2">
-            <span className="text-muted-foreground">Display name</span>
-            <span className="font-medium">{profile.display_name}</span>
-          </div>
-          <div className="flex justify-between py-2">
-            <span className="text-muted-foreground">Level</span>
-            <span className="font-medium">{profile.level}</span>
-          </div>
-        </CardContent>
-      </Card>
+      <SettingsProfileCard profile={profile} />
       <Card className="rounded-xl opacity-90">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-lg">
