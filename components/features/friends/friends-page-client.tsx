@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Search, UserPlus, Users } from "lucide-react";
+import Link from "next/link";
+import { MessageCircle, Search, UserPlus, Users } from "lucide-react";
 import { PageShell } from "@/components/shared/page-shell";
 import { SectionHeading } from "@/components/shared/section-heading";
 import { EmptyPanel } from "@/components/shared/empty-panel";
@@ -214,9 +215,20 @@ export function FriendsPageClient({
             icon={<Users className="h-7 w-7" />}
           />
         ) : (
-          <div className={UI_GRID}>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {friends.map(({ friend }) => (
-              <UserCard key={friend.id} user={friend} />
+              <UserCard
+                key={friend.id}
+                user={friend}
+                actions={
+                  <Button asChild size="sm" variant="outline" className="gap-1">
+                    <Link href={`/messages/${friend.id}`}>
+                      <MessageCircle className="h-3.5 w-3.5" />
+                      Message
+                    </Link>
+                  </Button>
+                }
+              />
             ))}
           </div>
         )}

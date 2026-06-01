@@ -60,6 +60,7 @@ function isProtectedWithoutProfile(pathname: string): boolean {
   const prefixes = [
     "/dashboard",
     "/friends",
+    "/messages",
     "/groups",
     "/events",
     "/challenges",

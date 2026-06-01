@@ -173,6 +173,34 @@ export interface GroupMessageWithAuthor extends GroupMessage {
   author: ProfilePublic;
 }
 
+export interface DmConversation {
+  id: string;
+  user_a: string;
+  user_b: string;
+  created_at: string;
+}
+
+export interface DmMessage {
+  id: string;
+  conversation_id: string;
+  sender_id: string;
+  message: string;
+  message_type: MessageType;
+  created_at: string;
+}
+
+export interface DmMessageWithAuthor extends DmMessage {
+  author: ProfilePublic;
+}
+
+export interface DmConversationPreview {
+  conversation_id: string;
+  friend: ProfilePublic;
+  last_message: string | null;
+  last_message_at: string | null;
+  last_sender_id: string | null;
+}
+
 export type NotificationType =
   | "friend_request"
   | "friend_accept"

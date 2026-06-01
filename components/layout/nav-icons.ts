@@ -1,6 +1,7 @@
 import {
   Calendar,
   LayoutDashboard,
+  MessageCircle,
   Settings,
   Target,
   Trophy,
@@ -13,6 +14,7 @@ import {
 export const NAV_ICONS = {
   LayoutDashboard,
   Users,
+  MessageCircle,
   UsersRound,
   Calendar,
   Target,

@@ -98,7 +98,7 @@ export function NotificationsBell({
       </DropdownMenuTrigger>
       <DropdownMenuContent
         align="end"
-        className="w-80 max-h-[min(400px,70vh)] overflow-y-auto"
+        className="w-80 max-h-[min(400px,70vh)] overflow-y-auto border-border bg-card p-1.5 shadow-xl"
       >
         <div className="flex items-center justify-between px-2 py-1.5">
           <p className="text-sm font-semibold">Notifications</p>
@@ -129,8 +129,10 @@ export function NotificationsBell({
             const content = (
               <>
                 <p className="font-medium leading-tight">{n.title}</p>
-                <p className="line-clamp-2 text-xs text-muted-foreground">{n.body}</p>
-                <p className="mt-1 text-[10px] text-muted-foreground">
+                <p className="line-clamp-2 text-xs text-muted-foreground group-data-[highlighted]:text-background/75 group-focus:text-background/75">
+                  {n.body}
+                </p>
+                <p className="mt-1 text-[10px] text-muted-foreground group-data-[highlighted]:text-background/60 group-focus:text-background/60">
                   {new Date(n.created_at).toLocaleString()}
                 </p>
               </>
@@ -140,8 +142,11 @@ export function NotificationsBell({
               <DropdownMenuItem
                 key={n.id}
                 className={cn(
-                  "animate-notification-in flex cursor-pointer flex-col items-start gap-0.5 py-2",
-                  !n.read && "bg-accent/50"
+                  "group animate-notification-in flex cursor-pointer flex-col items-start gap-0.5 rounded-lg py-2.5 outline-none",
+                  "focus:bg-foreground focus:text-background",
+                  "data-[highlighted]:bg-foreground data-[highlighted]:text-background",
+                  "active:bg-foreground/90 active:text-background",
+                  !n.read && "bg-muted/70"
                 )}
                 onClick={() => {
                   if (!n.read) void handleMarkRead(n.id);

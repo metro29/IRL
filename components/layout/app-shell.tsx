@@ -52,7 +52,7 @@ export async function AppShell({ children }: AppShellProps) {
             <PageTransition>{children}</PageTransition>
           </main>
         </div>
-        <MobileBottomNav items={mobileItems} />
+        <MobileBottomNav items={mobileItems} allItems={sidebarItems} />
       </div>
     </SessionProvider>
   );

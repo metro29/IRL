@@ -96,6 +96,7 @@ lib/
 10. `supabase/migrations/20260531500000_create_group_rpc.sql` — `create_group` RPC + RLS fix for creating groups (required for **Create Group**)
 11. `supabase/migrations/20260531600000_friend_request_rpc.sql` — `send_friend_request` RPC (required for **Add Friend** on `/friends`)
 12. `supabase/migrations/20260531700000_avatars_storage.sql` — profile photo storage bucket (required for **Settings → profile photo**)
+13. `supabase/migrations/20260531800000_direct_messages.sql` — private friend-only DMs (required for **Messages**)
 
 **Game loop rules:** only `activate_event` generates challenges; sync calls `activate_event` only. Client RPCs: `award_challenge_completion`, `submit_event_attendance`, `review_event_attendance` (+ admin `activate_event` / `end_event`).
 

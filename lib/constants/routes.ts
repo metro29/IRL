@@ -3,6 +3,7 @@ export const AUTH_ROUTES = ["/login", "/signup"] as const;
 export const PROTECTED_ROUTE_PREFIXES = [
   "/dashboard",
   "/friends",
+  "/messages",
   "/groups",
   "/events",
   "/challenges",
@@ -17,6 +18,7 @@ export const DEFAULT_GUEST_REDIRECT = "/login";
 export const NAV_ITEMS = [
   { href: "/dashboard", label: "Dashboard", icon: "LayoutDashboard" },
   { href: "/friends", label: "Friends", icon: "Users" },
+  { href: "/messages", label: "Messages", icon: "MessageCircle" },
   { href: "/groups", label: "Groups", icon: "UsersRound" },
   { href: "/events", label: "Events", icon: "Calendar" },
   { href: "/challenges", label: "Challenges", icon: "Target" },
@@ -26,7 +28,7 @@ export const NAV_ITEMS = [
 
 export const MOBILE_NAV_ITEMS = [
   { href: "/dashboard", label: "Home", icon: "LayoutDashboard" },
+  { href: "/messages", label: "Messages", icon: "MessageCircle" },
   { href: "/groups", label: "Groups", icon: "UsersRound" },
   { href: "/events", label: "Events", icon: "Calendar" },
-  { href: "/settings", label: "Profile", icon: "User" },
 ] as const;
