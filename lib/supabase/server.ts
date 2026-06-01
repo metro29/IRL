@@ -1,12 +1,16 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { cookies } from "next/headers";
-import { requireSupabaseEnv } from "@/lib/supabase/config";
+import { getSupabaseEnv } from "@/lib/supabase/config";
 
 export async function createClient() {
-  const { url, key } = requireSupabaseEnv();
+  const env = getSupabaseEnv();
+  if (!env) {
+    throw new Error("MISSING_SUPABASE_ENV");
+  }
+
   const cookieStore = await cookies();
 
-  return createServerClient(url, key, {
+  return createServerClient(env.url, env.key, {
     cookies: {
       getAll() {
         return cookieStore.getAll();
@@ -18,9 +22,13 @@ export async function createClient() {
           options: CookieOptions;
         }[]
       ) {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          cookieStore.set(name, value, options);
-        });
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+          });
+        } catch {
+          // Server Component read-only context — middleware refreshes session.
+        }
       },
     },
   });

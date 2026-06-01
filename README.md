@@ -25,8 +25,10 @@ Copy `.env.example` to `.env.local` (already configured if using the provided pr
 
 ```
 NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=
 ```
+
+(Legacy `NEXT_PUBLIC_SUPABASE_ANON_KEY` also works.)
 
 ### 3. Supabase database
 
@@ -43,7 +45,12 @@ In **Authentication → Providers → Email**:
 
 Anonymous sign-in is **not** used.
 
-In **Project Settings → API**, use the **anon** key (JWT starting with `eyJ…`) for `NEXT_PUBLIC_SUPABASE_ANON_KEY` on Vercel.
+In **Authentication → URL configuration**, add your site URL and redirect URLs if using email links:
+
+- Site URL: `https://your-app.vercel.app`
+- Redirect URLs: `https://your-app.vercel.app/auth/callback` and `http://localhost:3000/auth/callback`
+
+In **Project Settings → API**, use the **publishable** key (`sb_publishable_…`) or legacy **anon** key (`eyJ…`) for `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` on Vercel. **Redeploy after changing env vars.**
 
 ### 5. Run locally
 
@@ -85,6 +92,7 @@ lib/
 6. `supabase/migrations/20260531300000_engagement_layer.sql` — group chat, notifications, realtime
 7. `supabase/migrations/20260531310000_engagement_hardening.sql` — chat bucket, notification/trigger clarity
 8. `supabase/migrations/20260531320000_stability_hardening.sql` — XP/notification idempotency, revoke submit_challenge
+9. `supabase/migrations/20260531400000_username_check_rpc.sql` — public username availability check for signup (required for `/signup`)
 
 **Game loop rules:** only `activate_event` generates challenges; sync calls `activate_event` only. Client RPCs: `award_challenge_completion`, `submit_event_attendance`, `review_event_attendance` (+ admin `activate_event` / `end_event`).
 

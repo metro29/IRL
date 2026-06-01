@@ -8,17 +8,14 @@ import {
   Users,
   UsersRound,
 } from "lucide-react";
-import { getCurrentUserProfile, getCurrentUserId } from "@/lib/db/profiles";
-import {
-  getNotificationsForUser,
-  getUnreadNotificationCount,
-} from "@/lib/db/notifications";
+import { loadAppShellData } from "@/lib/server/app-shell-data";
 import { MOBILE_NAV_ITEMS, NAV_ITEMS } from "@/lib/constants/routes";
 import { TopNav } from "@/components/layout/top-nav";
 import { SidebarNav } from "@/components/layout/sidebar-nav";
 import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import { SessionProvider } from "@/components/layout/session-provider";
 import { PageTransition } from "@/components/layout/page-transition";
+import { ConfigErrorPanel } from "@/components/layout/config-error-panel";
 
 const iconMap = {
   LayoutDashboard,
@@ -36,17 +33,18 @@ interface AppShellProps {
 }
 
 export async function AppShell({ children }: AppShellProps) {
-  const [profile, userId] = await Promise.all([
-    getCurrentUserProfile(),
-    getCurrentUserId(),
-  ]);
+  const shell = await loadAppShellData();
 
-  const [initialNotifications, initialUnreadCount] = userId
-    ? await Promise.all([
-        getNotificationsForUser(userId),
-        getUnreadNotificationCount(userId),
-      ])
-    : [[], 0];
+  if (!shell.ok) {
+    return (
+      <ConfigErrorPanel
+        title={shell.reason === "config" ? "Supabase not configured" : "Something went wrong"}
+        message={shell.message}
+      />
+    );
+  }
+
+  const { profile, userId, initialNotifications, initialUnreadCount } = shell;
 
   const sidebarItems = NAV_ITEMS.map((item) => ({
     ...item,

@@ -1,36 +1,122 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2 } from "lucide-react";
-import { signUpAction } from "@/lib/actions/auth";
+import { mapAuthError } from "@/lib/auth/auth-messages";
+import { checkUsernameTakenClient } from "@/lib/auth/check-username";
+import {
+  normalizeUsername,
+  usernameToAuthEmail,
+} from "@/lib/auth/username-auth";
 import { AuthField } from "@/components/features/auth/auth-field";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { feedback } from "@/lib/feedback/feedback";
 import { cn } from "@/lib/utils";
 
 export function SignupForm() {
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (formData: FormData) => {
+    if (!isSupabaseConfigured()) {
+      setError(
+        "Supabase env vars missing. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY on Vercel, then redeploy."
+      );
+      return;
+    }
+
     setError(null);
     startTransition(async () => {
-      const result = await signUpAction(formData);
-      if (!result.success) {
-        setError(result.error);
-        feedback.error("Could not create account", result.error);
+      const displayName = String(formData.get("displayName") ?? "").trim();
+      const usernameRaw = String(formData.get("username") ?? "");
+      const password = String(formData.get("password") ?? "");
+
+      if (!displayName || !usernameRaw || !password) {
+        setError("Display name, username, and password are required.");
         return;
       }
-      router.push(result.redirectTo);
-      router.refresh();
+
+      if (password.length < 8) {
+        setError("Password must be at least 8 characters.");
+        return;
+      }
+
+      const username = normalizeUsername(usernameRaw);
+      if (username.length < 3) {
+        setError(
+          "Username must be at least 3 characters (letters, numbers, underscore)."
+        );
+        return;
+      }
+
+      const { taken, error: checkError } =
+        await checkUsernameTakenClient(username);
+
+      if (checkError) {
+        setError(checkError);
+        return;
+      }
+
+      if (taken) {
+        setError("That username is already taken.");
+        return;
+      }
+
+      const supabase = createClient();
+      const { data, error: signUpError } = await supabase.auth.signUp({
+        email: usernameToAuthEmail(username),
+        password,
+        options: {
+          data: { display_name: displayName, username },
+        },
+      });
+
+      if (signUpError) {
+        const msg = mapAuthError(signUpError.message);
+        setError(msg);
+        feedback.error("Could not create account", msg);
+        return;
+      }
+
+      if (!data.user) {
+        setError("Could not create account. Try again.");
+        return;
+      }
+
+      if (!data.session) {
+        setError(
+          "Account created but no session. In Supabase disable Confirm email under Authentication → Email, then try again."
+        );
+        return;
+      }
+
+      const { error: profileError } = await supabase.from("profiles").upsert(
+        {
+          id: data.user.id,
+          username,
+          display_name: displayName,
+        },
+        { onConflict: "id" }
+      );
+
+      if (profileError) {
+        const msg = profileError.message.includes("duplicate")
+          ? "That username is already taken."
+          : profileError.message;
+        setError(msg);
+        feedback.error("Could not save profile", msg);
+        return;
+      }
+
+      feedback.success("Welcome to IRL!");
+      window.location.href = "/dashboard";
     });
   };
 
   return (
     <form action={handleSubmit} className="space-y-4">
       <p className="text-sm leading-relaxed text-[#f5f2eb]/55">
-        Pick a username and password. No email address — you sign in with those two.
+        Pick a username and password. No email — you sign in with those two.
       </p>
       <AuthField
         id="displayName"

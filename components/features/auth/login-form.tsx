@@ -1,29 +1,66 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2 } from "lucide-react";
-import { signInAction } from "@/lib/actions/auth";
+import { mapAuthError } from "@/lib/auth/auth-messages";
+import {
+  normalizeUsername,
+  usernameToAuthEmail,
+} from "@/lib/auth/username-auth";
 import { AuthField } from "@/components/features/auth/auth-field";
+import { createClient, isSupabaseConfigured } from "@/lib/supabase/client";
 import { feedback } from "@/lib/feedback/feedback";
 import { cn } from "@/lib/utils";
 
 export function LoginForm() {
-  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (formData: FormData) => {
+    if (!isSupabaseConfigured()) {
+      setError(
+        "Supabase env vars missing. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY on Vercel, then redeploy."
+      );
+      return;
+    }
+
     setError(null);
     startTransition(async () => {
-      const result = await signInAction(formData);
-      if (!result.success) {
-        setError(result.error);
-        feedback.error("Sign in failed", result.error);
+      const usernameRaw = String(formData.get("username") ?? "");
+      const password = String(formData.get("password") ?? "");
+
+      if (!usernameRaw || !password) {
+        setError("Username and password are required.");
         return;
       }
-      router.push(result.redirectTo);
-      router.refresh();
+
+      const username = normalizeUsername(usernameRaw);
+      if (username.length < 3) {
+        setError("Enter a valid username.");
+        return;
+      }
+
+      const supabase = createClient();
+      const { data, error: signInError } = await supabase.auth.signInWithPassword(
+        {
+          email: usernameToAuthEmail(username),
+          password,
+        }
+      );
+
+      if (signInError) {
+        const msg = mapAuthError(signInError.message);
+        setError(msg);
+        feedback.error("Sign in failed", msg);
+        return;
+      }
+
+      if (!data.session) {
+        setError("Sign in failed — no session returned. Try again.");
+        return;
+      }
+
+      window.location.href = "/dashboard";
     });
   };
 

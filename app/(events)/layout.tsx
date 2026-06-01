@@ -1,5 +1,7 @@
 import { AuthenticatedLayout } from "@/components/layout/authenticated-layout";
 
+export const dynamic = "force-dynamic";
+
 export default function EventsGroupLayout({
   children,
 }: {

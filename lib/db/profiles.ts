@@ -24,27 +24,42 @@ export async function getProfileByUserId(
     .eq("id", userId)
     .maybeSingle();
 
-  if (error) throw error;
+  if (error) return null;
   return data as Profile | null;
 }
 
 export async function getProfileByUsername(
   username: string
 ): Promise<Profile | null> {
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("username", username.toLowerCase())
-    .maybeSingle();
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase
+      .from("profiles")
+      .select("*")
+      .eq("username", username.toLowerCase())
+      .maybeSingle();
 
-  if (error) throw error;
-  return data as Profile | null;
+    if (error) return null;
+    return data as Profile | null;
+  } catch {
+    return null;
+  }
 }
 
 export async function isUsernameAvailable(username: string): Promise<boolean> {
-  const existing = await getProfileByUsername(username);
-  return existing === null;
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.rpc("is_username_taken", {
+      check_username: username.toLowerCase(),
+    });
+    if (!error) {
+      return data !== true;
+    }
+    const existing = await getProfileByUsername(username);
+    return existing === null;
+  } catch {
+    return true;
+  }
 }
 
 export async function createProfile(
@@ -83,21 +98,29 @@ export async function updateProfileBasics(
 }
 
 export async function getCurrentUserProfile(): Promise<Profile | null> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  if (!user) return null;
-  return getProfileByUserId(user.id);
+    if (!user) return null;
+    return getProfileByUserId(user.id);
+  } catch {
+    return null;
+  }
 }
 
 export async function getCurrentUserId(): Promise<string | null> {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  return user?.id ?? null;
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    return user?.id ?? null;
+  } catch {
+    return null;
+  }
 }
 
 export async function searchProfilesByUsername(
