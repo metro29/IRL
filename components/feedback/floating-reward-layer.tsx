@@ -52,7 +52,7 @@ function FloatingItem({
       }}
     >
       {isXp ? (
-        <span className="flex items-center gap-1 rounded-full border border-primary/40 bg-gradient-to-r from-violet-600 to-fuchsia-500 px-3 py-1.5 text-sm font-bold text-white shadow-lg">
+        <span className="flex items-center gap-1 rounded-full border border-primary/40 bg-gradient-to-r from-primary to-amber-500 px-3 py-1.5 text-sm font-bold text-primary-foreground shadow-lg">
           <Sparkles className="h-3.5 w-3.5" />
           +{reward.value} {reward.label ?? "XP"}
         </span>

@@ -39,7 +39,7 @@ export async function AppShell({ children }: AppShellProps) {
 
   return (
     <SessionProvider profile={profile}>
-      <div className="min-h-screen bg-background bg-[radial-gradient(ellipse_120%_80%_at_50%_-20%,hsl(var(--accent)/0.5),transparent_50%)]">
+      <div className="irl-app-frame">
         <TopNav
           profile={profile}
           userId={userId}
@@ -48,7 +48,7 @@ export async function AppShell({ children }: AppShellProps) {
         />
         <div className="mx-auto flex w-full max-w-7xl">
           <SidebarNav items={sidebarItems} />
-          <main className="min-h-[calc(100vh-4rem)] flex-1 px-4 pb-24 pt-6 md:px-8 md:pb-8">
+          <main className="irl-main">
             <PageTransition>{children}</PageTransition>
           </main>
         </div>

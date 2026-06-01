@@ -19,8 +19,11 @@ export function SidebarNav({ items }: SidebarNavProps) {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden w-56 shrink-0 border-r md:block">
-      <nav className="sticky top-16 space-y-1 p-4">
+    <aside className="hidden w-60 shrink-0 border-r border-border/60 md:block">
+      <nav className="sticky top-16 space-y-1.5 p-4">
+        <p className="mb-3 px-3 text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">
+          Menu
+        </p>
         {items.map((item) => {
           const active =
             pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -30,10 +33,10 @@ export function SidebarNav({ items }: SidebarNavProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all hover:scale-[1.02]",
+                "flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-colors",
                 active
-                  ? "bg-primary/10 text-primary"
-                  : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                  ? "irl-nav-active"
+                  : "text-muted-foreground hover:bg-accent/60 hover:text-foreground"
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />

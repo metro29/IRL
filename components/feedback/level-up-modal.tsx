@@ -45,7 +45,7 @@ export function LevelUpModal() {
         </p>
         <div className="mt-6 h-2 overflow-hidden rounded-full bg-muted">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-500 transition-[width] duration-700 ease-out"
+            className="h-full rounded-full bg-gradient-to-r from-primary to-amber-500 transition-[width] duration-700 ease-out"
             style={{ width: `${barWidth}%` }}
           />
         </div>

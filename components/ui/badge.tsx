@@ -11,7 +11,7 @@ const badgeVariants = cva(
         secondary: "border-transparent bg-secondary text-secondary-foreground",
         outline: "text-foreground",
         owner: "border-amber-200 bg-amber-100 text-amber-900",
-        admin: "border-violet-200 bg-violet-100 text-violet-900",
+        admin: "border-primary/25 bg-primary/10 text-primary",
         member: "border-slate-200 bg-slate-100 text-slate-700",
         pending: "border-orange-200 bg-orange-50 text-orange-800",
       },

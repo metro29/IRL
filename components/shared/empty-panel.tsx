@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
 import { Inbox } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
-import { UI_CARD, UI_EMPTY_PAD } from "@/lib/constants/ui";
+import { UI_EMPTY_PAD } from "@/lib/constants/ui";
 
 interface EmptyPanelProps {
   title: string;
@@ -20,17 +19,19 @@ export function EmptyPanel({
   className,
 }: EmptyPanelProps) {
   return (
-    <Card className={cn(UI_CARD, className)}>
-      <CardContent className={UI_EMPTY_PAD}>
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-muted">
-          {icon ?? <Inbox className="h-6 w-6 text-muted-foreground" />}
+    <div className={cn("irl-empty", className)}>
+      <div className={UI_EMPTY_PAD}>
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary ring-1 ring-primary/20">
+          {icon ?? <Inbox className="h-7 w-7" />}
         </div>
-        <div className="space-y-1">
-          <p className="font-semibold">{title}</p>
-          <p className="max-w-sm text-sm text-muted-foreground">{description}</p>
+        <div className="space-y-2">
+          <p className="font-display text-lg font-semibold">{title}</p>
+          <p className="mx-auto max-w-md text-sm leading-relaxed text-muted-foreground">
+            {description}
+          </p>
         </div>
-        {action ? <div className="pt-2">{action}</div> : null}
-      </CardContent>
-    </Card>
+        {action ? <div className="pt-1">{action}</div> : null}
+      </div>
+    </div>
   );
 }

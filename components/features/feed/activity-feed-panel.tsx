@@ -12,8 +12,9 @@ import {
 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { EmptyPanel } from "@/components/shared/empty-panel";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { UI_CARD } from "@/lib/constants/ui";
+import { SectionHeading } from "@/components/shared/section-heading";
+import { Card, CardContent } from "@/components/ui/card";
+import { UI_CARD, UI_SECTION } from "@/lib/constants/ui";
 import { useActivityFeed } from "@/hooks/use-activity-feed";
 import { cn } from "@/lib/utils";
 import type { ActivityFeedItem, ActivityFeedKind } from "@/types/domain";
@@ -51,32 +52,30 @@ export function ActivityFeedPanel({
   }
 
   return (
-    <Card className={UI_CARD}>
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2 text-lg">
-          <CheckCircle2 className="h-5 w-5 text-primary" />
-          Group activity
-        </CardTitle>
-        <CardDescription>Live updates from challenges, events, and XP</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-2">
-        {items.length === 0 ? (
-          <EmptyPanel
-            title="Quiet for now"
-            description="When someone completes a challenge, attends an event, or earns XP, it will show up here live."
-            icon={<CheckCircle2 className="h-6 w-6 text-primary" />}
-            className="border-0 shadow-none"
-          />
-        ) : (
-          items.map((item) => (
-            <ActivityRow
-              key={`${item.source_type}:${item.source_id}`}
-              item={item}
+    <section className={UI_SECTION}>
+      <SectionHeading icon={<CheckCircle2 className="h-4 w-4" />}>
+        Group activity
+      </SectionHeading>
+      <Card className={UI_CARD}>
+        <CardContent className="space-y-2 p-5 md:p-6">
+          {items.length === 0 ? (
+            <EmptyPanel
+              title="Quiet for now"
+              description="When someone completes a challenge, attends an event, or earns XP, it will show up here live."
+              icon={<CheckCircle2 className="h-7 w-7" />}
+              className="border-0 bg-transparent shadow-none"
             />
-          ))
-        )}
-      </CardContent>
-    </Card>
+          ) : (
+            items.map((item) => (
+              <ActivityRow
+                key={`${item.source_type}:${item.source_id}`}
+                item={item}
+              />
+            ))
+          )}
+        </CardContent>
+      </Card>
+    </section>
   );
 }
 
@@ -86,7 +85,7 @@ function ActivityRow({ item }: { item: ActivityFeedItem }) {
   const inner = (
     <div
       className={cn(
-        "animate-leaderboard-slide flex items-start gap-3 rounded-xl border bg-background/80 p-3 transition-colors",
+        "animate-leaderboard-slide flex items-start gap-3 rounded-xl border border-border/60 bg-muted/30 p-3 transition-colors",
         item.href && "hover:bg-accent/40"
       )}
     >

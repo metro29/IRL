@@ -113,15 +113,25 @@ export async function getGroupMembersWithProfiles(
     (profiles ?? []).map((p) => [p.id, p as ProfilePublic])
   );
 
-  return members.map((m) => ({
-    id: m.id,
-    group_id: m.group_id,
-    user_id: m.user_id,
-    role: m.role as GroupMemberRole,
-    joined_at: m.joined_at,
-    profile: profileMap.get(m.user_id)!,
-    display_role: resolveDisplayRole(m.user_id, m.role as GroupMemberRole, ownerId),
-  }));
+  return members
+    .map((m) => {
+      const profile = profileMap.get(m.user_id);
+      if (!profile) return null;
+      return {
+        id: m.id,
+        group_id: m.group_id,
+        user_id: m.user_id,
+        role: m.role as GroupMemberRole,
+        joined_at: m.joined_at,
+        profile,
+        display_role: resolveDisplayRole(
+          m.user_id,
+          m.role as GroupMemberRole,
+          ownerId
+        ),
+      };
+    })
+    .filter((row): row is GroupMemberWithProfile => row !== null);
 }
 
 export async function getGroupWithMetaForUser(

@@ -46,10 +46,21 @@ export function TopNav({
     router.refresh();
   };
 
+  const level = profile?.level ?? 1;
+  const xp = profile?.xp ?? 0;
+
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 md:px-8">
+    <header className="irl-glass sticky top-0 z-40">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-4 px-4 md:px-8">
         <AppLogo />
+        {profile ? (
+          <div className="hidden items-center gap-2 rounded-full border border-border/80 bg-card/80 px-3 py-1.5 text-xs font-medium shadow-sm sm:flex">
+            <span className="text-muted-foreground">Lvl</span>
+            <span className="font-display font-bold text-primary">{level}</span>
+            <span className="h-3 w-px bg-border" aria-hidden />
+            <span className="tabular-nums text-muted-foreground">{xp} XP</span>
+          </div>
+        ) : null}
         <div className="flex items-center gap-2">
           <NotificationsBell
             userId={userId}
@@ -59,7 +70,7 @@ export function TopNav({
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-10 w-10 rounded-full p-0">
-                <Avatar className="h-9 w-9 transition-transform hover:scale-[1.02]">
+                <Avatar className="h-9 w-9 ring-2 ring-primary/20 ring-offset-2 ring-offset-background">
                   <AvatarImage src={profile?.avatar_url ?? undefined} alt="" />
                   <AvatarFallback>{initials}</AvatarFallback>
                 </Avatar>

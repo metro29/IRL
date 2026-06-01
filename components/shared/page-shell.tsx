@@ -19,6 +19,8 @@ interface PageShellProps {
   emptyIcon?: ReactNode;
   children?: ReactNode;
   className?: string;
+  /** Optional hero slot above main content (dashboard welcome, etc.) */
+  hero?: ReactNode;
 }
 
 export function PageShell({
@@ -31,13 +33,19 @@ export function PageShell({
   emptyIcon,
   children,
   className,
+  hero,
 }: PageShellProps) {
   return (
     <div className={cn(UI_PAGE, className)}>
-      <header className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight md:text-3xl">{title}</h1>
+      {hero}
+      <header className="space-y-2 border-b border-border/50 pb-6">
+        <h1 className="font-display text-3xl font-bold tracking-tight md:text-4xl">
+          {title}
+        </h1>
         {description ? (
-          <p className="text-muted-foreground">{description}</p>
+          <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
+            {description}
+          </p>
         ) : null}
       </header>
 

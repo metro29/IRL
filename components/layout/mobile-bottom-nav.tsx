@@ -19,8 +19,8 @@ export function MobileBottomNav({ items }: MobileBottomNavProps) {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t bg-background/95 backdrop-blur md:hidden">
-      <div className="mx-auto flex max-w-lg items-center justify-around px-2 py-2">
+    <nav className="fixed bottom-0 left-0 right-0 z-40 border-t border-border/60 bg-background/90 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-xl md:hidden">
+      <div className="mx-auto flex max-w-lg items-center justify-around gap-1">
         {items.map((item) => {
           const active =
             pathname === item.href || pathname.startsWith(`${item.href}/`);
@@ -30,12 +30,21 @@ export function MobileBottomNav({ items }: MobileBottomNavProps) {
               key={item.href}
               href={item.href}
               className={cn(
-                "flex flex-col items-center gap-0.5 rounded-xl px-3 py-1.5 text-xs transition-all active:scale-95",
-                active ? "text-primary" : "text-muted-foreground"
+                "flex min-w-[4.5rem] flex-col items-center gap-0.5 rounded-2xl px-2 py-2 text-[11px] transition-colors",
+                active
+                  ? "bg-primary/10 text-primary"
+                  : "text-muted-foreground active:bg-accent/50"
               )}
             >
-              <Icon className={cn("h-5 w-5", active && "scale-110")} />
-              <span className="font-medium">{item.label}</span>
+              <span
+                className={cn(
+                  "flex h-8 w-8 items-center justify-center rounded-xl transition-colors",
+                  active && "bg-primary/15"
+                )}
+              >
+                <Icon className="h-5 w-5" />
+              </span>
+              <span className="font-semibold">{item.label}</span>
             </Link>
           );
         })}

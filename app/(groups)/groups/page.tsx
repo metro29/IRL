@@ -11,13 +11,13 @@ export default async function GroupsPage() {
 
   const result = await safePageLoad(() => getCurrentUserGroup());
 
-  if (result.error || !result.data) {
+  if (result.error) {
     return (
       <PageShell
         title="Groups"
         description="Team up with friends."
         status="error"
-        errorMessage={result.error ?? "Failed to load groups."}
+        errorMessage={result.error}
       />
     );
   }

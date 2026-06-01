@@ -10,9 +10,11 @@ interface SectionHeadingProps {
 
 export function SectionHeading({ children, icon, className }: SectionHeadingProps) {
   return (
-    <h2 className={cn(UI_SECTION_TITLE, className)}>
-      {icon ? <span className="text-primary">{icon}</span> : null}
-      {children}
-    </h2>
+    <div className={cn("flex items-center justify-between gap-4", className)}>
+      <h2 className={UI_SECTION_TITLE}>
+        {icon ? <span className="irl-section-label-icon">{icon}</span> : null}
+        {children}
+      </h2>
+    </div>
   );
 }
