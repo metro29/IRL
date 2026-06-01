@@ -1,0 +1,518 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 40 20% 97%;
+    --foreground: 24 12% 12%;
+    --card: 40 25% 99%;
+    --card-foreground: 24 12% 12%;
+    --popover: 40 25% 99%;
+    --popover-foreground: 24 12% 12%;
+    --primary: 18 95% 52%;
+    --primary-foreground: 24 12% 8%;
+    --secondary: 35 18% 92%;
+    --secondary-foreground: 24 10% 22%;
+    --muted: 35 14% 93%;
+    --muted-foreground: 24 8% 42%;
+    --accent: 28 80% 94%;
+    --accent-foreground: 18 70% 38%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 35 12% 88%;
+    --input: 35 12% 88%;
+    --ring: 18 95% 52%;
+    --radius: 0.625rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display tracking-tight;
+  }
+}
+
+@keyframes xp-float {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.85);
+  }
+  15% {
+    opacity: 1;
+    transform: translateY(0) scale(1.08);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-48px) scale(1);
+  }
+}
+
+@keyframes go-live-pulse {
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.2);
+  }
+}
+
+@keyframes confetti-dot {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) scale(0.3);
+  }
+}
+
+@keyframes leaderboard-slide {
+  from {
+    opacity: 0.6;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-xp-float {
+  animation: xp-float 2.2s ease-out forwards;
+}
+
+.animate-go-live-pulse {
+  animation: go-live-pulse 1.2s ease-out forwards;
+}
+
+.animate-confetti-dot {
+  animation: confetti-dot 0.9s ease-out forwards;
+}
+
+.animate-leaderboard-slide {
+  animation: leaderboard-slide 0.35s ease-out;
+}
+
+@keyframes chat-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-chat-in {
+  animation: chat-in 0.25s ease-out;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes level-up {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes notification-in {
+  from {
+    opacity: 0;
+    transform: translateX(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes success-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes badge-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+@keyframes leaderboard-reorder {
+  from {
+    opacity: 0.85;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-page-enter {
+  animation: page-enter 0.35s ease-out;
+}
+
+.animate-level-up {
+  animation: level-up 1.4s ease-out forwards;
+}
+
+.animate-notification-in {
+  animation: notification-in 0.3s ease-out;
+}
+
+.animate-success-pop {
+  animation: success-pop 0.4s ease-out;
+}
+
+.animate-badge-pulse {
+  animation: badge-pulse 0.45s ease-out;
+}
+
+.animate-leaderboard-reorder {
+  animation: leaderboard-reorder 0.4s ease-out;
+}
+
+/* ─── UI Feedback System (transform + opacity only) ─────────────────────── */
+
+@keyframes fx-xp-origin {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(8px) scale(0.85);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translateY(0) scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-56px) scale(1);
+  }
+}
+
+@keyframes fx-points-pop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.6);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translateY(-32px) scale(0.9);
+  }
+}
+
+@keyframes fx-screen-pulse {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fx-level-modal {
+  0% {
+    opacity: 0;
+    transform: scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fx-banner-slide {
+  from {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fx-go-live-burst {
+  0% {
+    opacity: 0;
+    transform: scale(0.75);
+  }
+  45% {
+    opacity: 1;
+    transform: scale(1.04);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes fx-confetti-particle {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-48px) scale(0.2);
+  }
+}
+
+@keyframes fx-toast-in {
+  0% {
+    opacity: 0;
+    transform: translateX(24px) scale(0.92);
+  }
+  70% {
+    transform: translateX(-4px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+@keyframes fx-dropdown-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fx-chat-message {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fx-avatar-pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  70% {
+    transform: scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fx-typing-dot {
+  0%,
+  80%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.85);
+  }
+  40% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes fx-stagger-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fx-row-flash {
+  0% {
+    background-color: hsl(var(--primary) / 0.12);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+
+@keyframes fx-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fx-event-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 hsl(var(--primary) / 0);
+  }
+  50% {
+    box-shadow: 0 0 24px 2px hsl(var(--primary) / 0.15);
+  }
+}
+
+.animate-fx-xp-origin {
+  animation: fx-xp-origin 2s ease-out forwards;
+}
+
+.animate-fx-points-pop {
+  animation: fx-points-pop 1.4s ease-out forwards;
+}
+
+.animate-fx-screen-pulse {
+  animation: fx-screen-pulse 0.32s ease-out forwards;
+}
+
+.animate-fx-level-modal {
+  animation: fx-level-modal 0.5s cubic-bezier(0.34, 1.4, 0.64, 1) forwards;
+}
+
+.animate-fx-banner-slide {
+  animation: fx-banner-slide 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.animate-fx-go-live-burst {
+  animation: fx-go-live-burst 1.2s ease-out forwards;
+}
+
+.animate-fx-confetti-particle {
+  animation: fx-confetti-particle 0.9s ease-out forwards;
+}
+
+.animate-fx-toast-in {
+  animation: fx-toast-in 0.45s cubic-bezier(0.34, 1.2, 0.64, 1) forwards;
+}
+
+.animate-fx-dropdown-in {
+  animation: fx-dropdown-in 0.2s ease-out forwards;
+  transform-origin: top right;
+}
+
+.animate-fx-chat-message {
+  animation: fx-chat-message 0.28s ease-out forwards;
+}
+
+.animate-fx-avatar-pop {
+  animation: fx-avatar-pop 0.35s ease-out forwards;
+}
+
+.animate-fx-typing-dot {
+  animation: fx-typing-dot 1.2s ease-in-out infinite;
+}
+
+.animate-fx-stagger-in {
+  animation: fx-stagger-in 0.4s ease-out backwards;
+}
+
+.animate-fx-fade-in {
+  animation: fx-fade-in 0.25s ease-out forwards;
+}
+
+.fx-event-glow {
+  animation: fx-event-glow 2s ease-in-out infinite;
+}
+
+.fx-card-glow {
+  box-shadow: 0 0 0 2px hsl(var(--primary) / 0.35), 0 0 28px hsl(var(--primary) / 0.2);
+  transition: box-shadow 0.3s ease-out;
+}
+
+.fx-interactive {
+  transition: transform 0.2s cubic-bezier(0.34, 1.2, 0.64, 1), box-shadow 0.2s ease;
+  will-change: transform;
+}
+
+.fx-interactive:hover {
+  transform: translateY(-2px);
+}
+
+.fx-interactive:active {
+  transform: translateY(0) scale(0.98);
+}
+
+.fx-top-rank {
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.12);
+  border-color: hsl(var(--primary) / 0.25);
+}
+
+.fx-row-highlight {
+  animation: fx-row-flash 1.8s ease-out forwards;
+  border-radius: var(--radius);
+}
+
+.fx-input-fade {
+  transition: opacity 0.2s ease;
+}
+
+.fx-input-fade.fx-clearing {
+  opacity: 0.4;
+}
