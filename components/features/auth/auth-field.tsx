@@ -18,6 +18,7 @@ interface AuthFieldProps {
   pattern?: string;
   title?: string;
   hint?: string;
+  disabled?: boolean;
   onChange?: ComponentProps<"input">["onChange"];
 }
 

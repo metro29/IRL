@@ -13,6 +13,15 @@ function normalizeUsername(raw: string): string {
   return raw.trim().toLowerCase().replace(/[^a-z0-9_]/g, "");
 }
 
+function isMissingSessionMessage(message: string): boolean {
+  const lower = message.toLowerCase();
+  return (
+    lower.includes("auth session missing") ||
+    lower.includes("session missing") ||
+    lower.includes("not authenticated")
+  );
+}
+
 function anonymousAuthErrorMessage(message: string): string {
   const lower = message.toLowerCase();
   if (lower.includes("anonymous") || lower.includes("disabled")) {
@@ -37,6 +46,9 @@ function profileSaveError(error: PostgrestError): string {
   if (error.code === "42501") {
     return "Could not save profile. Check that Anonymous auth is enabled in Supabase.";
   }
+  if (isMissingSessionMessage(error.message)) {
+    return "Session was lost before saving. Refresh the page and try again.";
+  }
   return error.message;
 }
 
@@ -45,12 +57,7 @@ async function ensureAnonymousUser(
 ): Promise<{ userId: string } | { error: string }> {
   const {
     data: { user },
-    error: userError,
   } = await supabase.auth.getUser();
-
-  if (userError) {
-    return { error: anonymousAuthErrorMessage(userError.message) };
-  }
 
   if (user) return { userId: user.id };
 
@@ -62,6 +69,22 @@ async function ensureAnonymousUser(
   const userId = data.user?.id;
   if (!userId) {
     return { error: "Could not start a session. Please try again." };
+  }
+
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
+
+  if (sessionError && !isMissingSessionMessage(sessionError.message)) {
+    return { error: anonymousAuthErrorMessage(sessionError.message) };
+  }
+
+  if (!session) {
+    return {
+      error:
+        "Could not establish a session. Use the anon (eyJ…) API key in Vercel and enable Anonymous auth in Supabase.",
+    };
   }
 
   return { userId };
