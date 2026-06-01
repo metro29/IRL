@@ -36,10 +36,14 @@ Run the migration in the Supabase SQL Editor (or via CLI):
 
 ### 4. Supabase Auth settings
 
-In **Authentication → Providers → Email**:
+In **Authentication → Providers**:
 
-- Disable **Confirm email** (MVP: no email verification)
-- Optional: disable “Secure email change” flows for MVP
+- **Enable Anonymous** (required — app uses device sessions, no email/password)
+- **Disable Email** (optional, avoids confusion)
+
+In **Project Settings → API**, use the **anon** key (JWT starting with `eyJ…`) for `NEXT_PUBLIC_SUPABASE_ANON_KEY` on Vercel. The newer `sb_publishable_…` key may not work with all auth flows yet.
+
+No email verification or redirect URLs needed for email login.
 
 ### 5. Run locally
 

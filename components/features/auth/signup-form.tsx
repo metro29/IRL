@@ -1,29 +1,37 @@
 "use client";
 
 import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import { ArrowRight, Loader2 } from "lucide-react";
-import { signUpAction } from "@/lib/actions/auth";
+import { completeProfileAction } from "@/lib/actions/auth";
 import { AuthField } from "@/components/features/auth/auth-field";
 import { feedback } from "@/lib/feedback/feedback";
 import { cn } from "@/lib/utils";
 
 export function SignupForm() {
+  const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (formData: FormData) => {
     setError(null);
     startTransition(async () => {
-      const result = await signUpAction(formData);
-      if (result && !result.success) {
+      const result = await completeProfileAction(formData);
+      if (!result.success) {
         setError(result.error);
-        feedback.error("Sign up failed", result.error);
+        feedback.error("Could not save profile", result.error);
+        return;
       }
+      router.push(result.redirectTo);
+      router.refresh();
     });
   };
 
   return (
     <form action={handleSubmit} className="space-y-4">
+      <p className="text-sm leading-relaxed text-[#f5f2eb]/55">
+        Choose how your crew sees you. No email — just a username and display name.
+      </p>
       <AuthField
         id="displayName"
         label="Display name"
@@ -41,26 +49,6 @@ export function SignupForm() {
         pattern="[a-zA-Z0-9_]{3,24}"
         title="3–24 characters: letters, numbers, underscore"
         hint="Letters, numbers, and underscores only."
-      />
-      <AuthField
-        id="email"
-        label="Email"
-        name="email"
-        type="email"
-        autoComplete="email"
-        required
-        placeholder="you@school.edu"
-      />
-      <AuthField
-        id="password"
-        label="Password"
-        name="password"
-        type="password"
-        autoComplete="new-password"
-        required
-        minLength={8}
-        placeholder="At least 8 characters"
-        hint="Use something you won't forget after the weekend."
       />
       {error ? (
         <p
@@ -80,11 +68,11 @@ export function SignupForm() {
         {pending ? (
           <>
             <Loader2 className="h-4 w-4 animate-spin" aria-hidden />
-            Creating account…
+            Saving…
           </>
         ) : (
           <>
-            Create account
+            Enter IRL
             <ArrowRight className="h-4 w-4" aria-hidden />
           </>
         )}

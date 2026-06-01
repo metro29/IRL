@@ -9,19 +9,19 @@ interface AuthShellProps {
 const copy = {
   login: {
     eyebrow: "Welcome back",
-    title: "Sign in",
-    subtitle: "Pick up where your crew left off.",
-    switch: "New here?",
+    title: "Continue",
+    subtitle: "Same browser as before? Jump right in.",
+    switch: "First time?",
     switchHref: "/signup",
-    switchLabel: "Create account",
+    switchLabel: "Set up your profile",
   },
   signup: {
     eyebrow: "Join your crew",
-    title: "Create account",
-    subtitle: "One profile. One group. Real points for real plans.",
-    switch: "Already on IRL?",
+    title: "Your profile",
+    subtitle: "Username and name only — no email signup.",
+    switch: "Already set up?",
     switchHref: "/login",
-    switchLabel: "Sign in",
+    switchLabel: "Continue",
   },
 } as const;
 

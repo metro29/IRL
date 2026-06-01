@@ -1,13 +1,8 @@
 import { createClient } from "@/lib/supabase/client";
 
-export async function signIn(email: string, password: string) {
+export async function signInAnonymously() {
   const supabase = createClient();
-  return supabase.auth.signInWithPassword({ email, password });
-}
-
-export async function signUp(email: string, password: string) {
-  const supabase = createClient();
-  return supabase.auth.signUp({ email, password });
+  return supabase.auth.signInAnonymously();
 }
 
 export async function signOut() {

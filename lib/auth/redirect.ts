@@ -25,9 +25,21 @@ export function getRedirectForGuest(pathname: string): string | null {
   return null;
 }
 
-export function getRedirectForAuthenticated(pathname: string): string | null {
-  if (isAuthRoute(pathname) || pathname === "/") {
+export function getRedirectForAuthenticated(
+  pathname: string,
+  hasProfile: boolean
+): string | null {
+  if (pathname === "/") {
     return DEFAULT_AUTH_REDIRECT;
   }
+
+  if (pathname === "/login") {
+    return hasProfile ? DEFAULT_AUTH_REDIRECT : "/signup";
+  }
+
+  if (pathname === "/signup" && hasProfile) {
+    return DEFAULT_AUTH_REDIRECT;
+  }
+
   return null;
 }
