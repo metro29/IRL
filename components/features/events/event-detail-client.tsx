@@ -4,6 +4,7 @@ import { useCallback, useTransition } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { MapPin, Play, Square } from "lucide-react";
+import { DeleteEventButton } from "@/components/features/events/delete-event-button";
 import { PageShell } from "@/components/shared/page-shell";
 import { EventStatusBadge } from "@/components/features/events/event-status-badge";
 import { AttendanceUploadDialog } from "@/components/features/events/attendance-upload-dialog";
@@ -165,6 +166,11 @@ export function EventDetailClient({
                     End Event
                   </Button>
                 ) : null}
+                <DeleteEventButton
+                  eventId={event.id}
+                  eventTitle={event.title}
+                  redirectTo="/events"
+                />
               </div>
             ) : null}
           </CardContent>

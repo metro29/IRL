@@ -3,6 +3,7 @@
 import { useTransition } from "react";
 import Link from "next/link";
 import { MapPin, Play, Square } from "lucide-react";
+import { DeleteEventButton } from "@/components/features/events/delete-event-button";
 import { EventStatusBadge } from "@/components/features/events/event-status-badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -89,6 +90,9 @@ export function EventCard({ event, isAdmin }: EventCardProps) {
               <Square className="h-3.5 w-3.5" />
               End
             </Button>
+          ) : null}
+          {isAdmin ? (
+            <DeleteEventButton eventId={event.id} eventTitle={event.title} />
           ) : null}
         </div>
       </CardContent>

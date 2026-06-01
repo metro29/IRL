@@ -121,7 +121,7 @@ export async function deleteEventAction(eventId: string): Promise<ActionResult> 
 
   if (!event) return { success: false, error: "Event not found." };
   if (!(await isGroupAdmin(userId, event.group_id))) {
-    return { success: false, error: "Only group admins can delete events." };
+    return { success: false, error: "Only the group leader or admins can delete events." };
   }
 
   const { error } = await supabase.from("events").delete().eq("id", eventId);
@@ -129,6 +129,8 @@ export async function deleteEventAction(eventId: string): Promise<ActionResult> 
 
   revalidatePath("/events");
   revalidatePath("/dashboard");
+  revalidatePath(`/events/${eventId}`);
+  revalidatePath("/leaderboard");
   return { success: true, data: undefined };
 }
 
