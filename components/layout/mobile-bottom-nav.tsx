@@ -2,17 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { LucideIcon } from "lucide-react";
+import { getNavIcon } from "@/components/layout/nav-icons";
 import { cn } from "@/lib/utils";
 
-interface NavItem {
+export interface MobileNavItem {
   href: string;
   label: string;
-  icon: LucideIcon;
+  icon: string;
 }
 
 interface MobileBottomNavProps {
-  items: NavItem[];
+  items: MobileNavItem[];
 }
 
 export function MobileBottomNav({ items }: MobileBottomNavProps) {
@@ -24,7 +24,7 @@ export function MobileBottomNav({ items }: MobileBottomNavProps) {
         {items.map((item) => {
           const active =
             pathname === item.href || pathname.startsWith(`${item.href}/`);
-          const Icon = item.icon;
+          const Icon = getNavIcon(item.icon);
           return (
             <Link
               key={item.href}

@@ -1,13 +1,3 @@
-import {
-  Calendar,
-  LayoutDashboard,
-  Settings,
-  Target,
-  Trophy,
-  User,
-  Users,
-  UsersRound,
-} from "lucide-react";
 import { loadAppShellData } from "@/lib/server/app-shell-data";
 import { MOBILE_NAV_ITEMS, NAV_ITEMS } from "@/lib/constants/routes";
 import { TopNav } from "@/components/layout/top-nav";
@@ -16,17 +6,6 @@ import { MobileBottomNav } from "@/components/layout/mobile-bottom-nav";
 import { SessionProvider } from "@/components/layout/session-provider";
 import { PageTransition } from "@/components/layout/page-transition";
 import { ConfigErrorPanel } from "@/components/layout/config-error-panel";
-
-const iconMap = {
-  LayoutDashboard,
-  Users,
-  UsersRound,
-  Calendar,
-  Target,
-  Trophy,
-  Settings,
-  User,
-} as const;
 
 interface AppShellProps {
   children: React.ReactNode;
@@ -47,13 +26,15 @@ export async function AppShell({ children }: AppShellProps) {
   const { profile, userId, initialNotifications, initialUnreadCount } = shell;
 
   const sidebarItems = NAV_ITEMS.map((item) => ({
-    ...item,
-    icon: iconMap[item.icon as keyof typeof iconMap],
+    href: item.href,
+    label: item.label,
+    icon: item.icon,
   }));
 
   const mobileItems = MOBILE_NAV_ITEMS.map((item) => ({
-    ...item,
-    icon: iconMap[item.icon as keyof typeof iconMap],
+    href: item.href,
+    label: item.label,
+    icon: item.icon,
   }));
 
   return (

@@ -57,6 +57,10 @@ export default async function DashboardPage() {
     memberUserIds,
   } = result.data;
 
+  if (!profile) {
+    redirect("/signup");
+  }
+
   return (
     <DashboardClient
       profile={profile}

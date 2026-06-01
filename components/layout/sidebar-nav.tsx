@@ -2,17 +2,17 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { LucideIcon } from "lucide-react";
+import { getNavIcon } from "@/components/layout/nav-icons";
 import { cn } from "@/lib/utils";
 
-interface NavItem {
+export interface SidebarNavItem {
   href: string;
   label: string;
-  icon: LucideIcon;
+  icon: string;
 }
 
 interface SidebarNavProps {
-  items: NavItem[];
+  items: SidebarNavItem[];
 }
 
 export function SidebarNav({ items }: SidebarNavProps) {
@@ -24,7 +24,7 @@ export function SidebarNav({ items }: SidebarNavProps) {
         {items.map((item) => {
           const active =
             pathname === item.href || pathname.startsWith(`${item.href}/`);
-          const Icon = item.icon;
+          const Icon = getNavIcon(item.icon);
           return (
             <Link
               key={item.href}
