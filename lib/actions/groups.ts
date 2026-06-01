@@ -28,39 +28,26 @@ export async function createGroupAction(
 
   const supabase = await createClient();
 
-  const { data: group, error: groupError } = await supabase
-    .from("groups")
-    .insert([
-      {
-        name: trimmed,
-        description: description?.trim() || null,
-        owner_id: userId,
-        invite_code: "",
-      },
-    ])
-    .select("*")
-    .single();
+  const { data: groupId, error } = await supabase.rpc("create_group", {
+    p_name: trimmed,
+    p_description: description?.trim() || null,
+  });
 
-  if (groupError) {
-    return { success: false, error: groupError.message };
+  if (error) {
+    const message = error.message.includes("one group")
+      ? "You can only belong to one group at a time. Leave your current group first."
+      : error.message.includes("2 characters")
+        ? "Group name must be at least 2 characters."
+        : error.message.includes("Not authenticated")
+          ? "Not authenticated."
+          : error.message;
+    return { success: false, error: message };
   }
 
-  const { error: memberError } = await supabase.from("group_members").insert([
-    {
-      group_id: group.id,
-      user_id: userId,
-      role: "admin",
-    },
-  ]);
-
-  if (memberError) {
-    await supabase.from("groups").delete().eq("id", group.id);
-    return { success: false, error: memberError.message };
-  }
-
+  const id = groupId as string;
   revalidatePath("/groups");
-  revalidatePath(`/groups/${group.id}`);
-  return { success: true, data: { groupId: group.id } };
+  revalidatePath(`/groups/${id}`);
+  return { success: true, data: { groupId: id } };
 }
 
 export async function joinGroupByInviteCodeAction(
