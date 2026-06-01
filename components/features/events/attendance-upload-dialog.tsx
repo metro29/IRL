@@ -13,7 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { submitAttendanceAction } from "@/lib/actions/game";
 import { uploadProofPhoto } from "@/lib/storage/upload-proof";
-import { toast } from "@/hooks/use-toast";
+import { feedback } from "@/lib/feedback/feedback";
 import { useRouter } from "next/navigation";
 import type { AttendanceStatus } from "@/types/domain";
 
@@ -47,25 +47,20 @@ export function AttendanceUploadDialog({
         const url = await uploadProofPhoto(file, "attendance", userId);
         const result = await submitAttendanceAction(eventId, url);
         if (!result.success) {
-          toast({
-            title: "Upload failed",
-            description: result.error,
-            variant: "destructive",
-          });
+          feedback.error("Upload failed", result.error);
           return;
         }
-        toast({
-          title: "Attendance submitted",
-          description: "Waiting for admin approval (+25 XP when approved).",
-        });
+        feedback.success(
+          "Attendance submitted",
+          "Waiting for admin approval (+25 XP when approved)."
+        );
         setOpen(false);
         router.refresh();
       } catch (e) {
-        toast({
-          title: "Upload failed",
-          description: e instanceof Error ? e.message : "Could not upload photo.",
-          variant: "destructive",
-        });
+        feedback.error(
+          "Upload failed",
+          e instanceof Error ? e.message : "Could not upload photo."
+        );
       }
     });
   };

@@ -88,7 +88,7 @@ export function GroupDetailClient({
         description={group.description ?? "No description yet."}
         status="ready"
       >
-        <Card className="rounded-xl border-primary/20 bg-gradient-to-br from-violet-50/50 to-fuchsia-50/30">
+        <Card className="rounded-xl border-primary/20 bg-gradient-to-br from-accent/80 to-background">
           <CardHeader>
             <div className="flex flex-wrap items-start justify-between gap-4">
               <div>

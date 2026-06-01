@@ -16,6 +16,10 @@ export async function middleware(request: NextRequest) {
   const { supabase, supabaseResponse } = createMiddlewareClient(request);
   const pathname = request.nextUrl.pathname;
 
+  if (!supabase) {
+    return supabaseResponse;
+  }
+
   try {
     const {
       data: { user },

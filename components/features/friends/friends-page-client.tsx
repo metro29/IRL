@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { FriendActionButtons } from "@/components/features/friends/friend-action-buttons";
 import { searchUsersAction } from "@/lib/actions/friends";
 import { useSocialHydration } from "@/hooks/use-social-hydration";
-import { toast } from "@/hooks/use-toast";
+import { feedback } from "@/lib/feedback/feedback";
 import type {
   FriendRequestWithProfiles,
   FriendWithProfile,
@@ -55,11 +55,7 @@ export function FriendsPageClient({
       if (!result.success) {
         setSearchResults([]);
         setSearchError(result.error);
-        toast({
-          title: "Search failed",
-          description: result.error,
-          variant: "destructive",
-        });
+        feedback.error("Search failed", result.error);
         return;
       }
       setSearchResults(result.data);
@@ -76,20 +72,14 @@ export function FriendsPageClient({
           ? await acceptFriendRequestAction(requestId)
           : await rejectFriendRequestAction(requestId);
       if (!result.success) {
-        toast({
-          title: "Failed",
-          description: result.error,
-          variant: "destructive",
-        });
+        feedback.error("Failed", result.error);
         return;
       }
-      toast({
-        title: action === "accept" ? "Friend added!" : "Request declined",
-        description:
-          action === "accept"
-            ? "You can now invite them to your group."
-            : undefined,
-      });
+      if (action === "accept") {
+        feedback.success("Friend added!", "You can now invite them to your group.");
+      } else {
+        feedback.info("Request declined");
+      }
       router.refresh();
     });
   };

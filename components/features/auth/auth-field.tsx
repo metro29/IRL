@@ -1,3 +1,4 @@
+import type { ComponentProps } from "react";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
@@ -17,7 +18,7 @@ interface AuthFieldProps {
   pattern?: string;
   title?: string;
   hint?: string;
-  onChange?: React.ComponentProps<"input">["onChange"];
+  onChange?: ComponentProps<"input">["onChange"];
 }
 
 export function AuthField({

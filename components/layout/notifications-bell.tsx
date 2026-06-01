@@ -55,6 +55,7 @@ export function NotificationsBell({
     if (notificationCount > prevCountRef.current) {
       setBadgePulse(true);
       const t = setTimeout(() => setBadgePulse(false), 500);
+      prevCountRef.current = notificationCount;
       return () => clearTimeout(t);
     }
     prevCountRef.current = notificationCount;

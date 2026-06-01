@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { createEventAction } from "@/lib/actions/events";
-import { toast } from "@/hooks/use-toast";
+import { feedback } from "@/lib/feedback/feedback";
 import { useRouter } from "next/navigation";
 
 export function CreateEventDialog() {
@@ -37,15 +37,11 @@ export function CreateEventDialog() {
       });
 
       if (!result.success) {
-        toast({
-          title: "Could not create event",
-          description: result.error,
-          variant: "destructive",
-        });
+        feedback.error("Could not create event", result.error);
         return;
       }
 
-      toast({ title: "Event created", description: "Activate it when you're ready to play." });
+      feedback.success("Event created", "Activate it when you're ready to play.");
       setOpen(false);
       router.push(`/events/${result.data.eventId}`);
       router.refresh();

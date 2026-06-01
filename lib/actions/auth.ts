@@ -145,11 +145,6 @@ export async function completeProfileAction(
         id: userId,
         username,
         display_name: displayName,
-        avatar_url: null,
-        points: 0,
-        xp: 0,
-        level: 1,
-        streak: 0,
       },
       { onConflict: "id" }
     );
